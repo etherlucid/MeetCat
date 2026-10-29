@@ -45,7 +45,8 @@ updateText("packages/tauri/src-tauri/Cargo.toml", (content) =>
 );
 
 const tauriCargoDir = resolve(root, "packages/tauri/src-tauri");
-execSync("cargo generate-lockfile", {
+// Update only the workspace package so a release does not bump dependencies.
+execSync("cargo update --workspace", {
   cwd: tauriCargoDir,
   stdio: "inherit",
 });

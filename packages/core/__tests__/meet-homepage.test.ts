@@ -21,4 +21,11 @@ describe("isMeetHomepageUrl", () => {
   it("rejects meeting pages", () => {
     expect(isMeetHomepageUrl("https://meet.google.com/abc-defg-hij")).toBe(false);
   });
+
+  it.each(["/meet/abc-defg-hij", "/meet/abc-defg-hij/"])(
+    "rejects the meeting page at %s",
+    (path) => {
+      expect(isMeetHomepageUrl(`https://meet.google.com${path}?hs=186`)).toBe(false);
+    }
+  );
 });

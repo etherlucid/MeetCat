@@ -2005,7 +2005,7 @@ const INTERCEPT_SCRIPT: &str = r##"
         if (path.startsWith("/lookup/")) {
             return true;
         }
-        return /^\/[a-z0-9]{3}-[a-z0-9]{4}-[a-z0-9]{3}$/i.test(path);
+        return /^\/(?:meet\/)?[a-z0-9]{3}-[a-z0-9]{4}-[a-z0-9]{3}$/i.test(path);
     }
 
     function isMeetingPage() {
@@ -2164,7 +2164,9 @@ fn is_meeting_path(path: &str) -> bool {
         return true;
     }
 
-    let code = trimmed.trim_start_matches('/');
+    let code = trimmed
+        .strip_prefix("/meet/")
+        .unwrap_or_else(|| trimmed.trim_start_matches('/'));
     if code.len() != 12 {
         return false;
     }
@@ -2226,6 +2228,23 @@ mod tests {
     fn test_is_meeting_path_lookup() {
         assert!(is_meeting_path("/lookup/abc-defg-hij"));
         assert!(is_meeting_path("/lookup/anything"));
+    }
+
+    #[test]
+    fn test_meet_prefixed_meeting_navigation() {
+        assert!(is_meeting_path("/meet/abc-defg-hij"));
+        assert!(is_meeting_path("/meet/abc-defg-hij/"));
+        assert!(!is_meeting_path("/meet/abc-defg-hij/extra"));
+        assert!(!is_meeting_path("/other/abc-defg-hij"));
+        assert!(!is_meeting_path("/meet/home"));
+
+        let current = Url::parse("https://meet.google.com/meet/abc-defg-hij?hs=186").unwrap();
+        let external = Url::parse("https://www.google.com/url?url=https%3A%2F%2Fexample.com").unwrap();
+        assert!(is_meeting_url(&current));
+        assert!(should_open_external(&current, &external));
+        for home in ["https://meet.google.com/", "https://meet.google.com/home"] {
+            assert!(!should_open_external(&current, &Url::parse(home).unwrap()));
+        }
     }
 
     #[test]

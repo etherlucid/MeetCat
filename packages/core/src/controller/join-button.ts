@@ -242,10 +242,10 @@ export function clickJoinButton(container: Document | Element): boolean {
 /**
  * Check if the current URL is a meeting page
  *
- * @param pathname - The pathname to check (e.g., "/abc-defg-hij")
+ * @param pathname - The pathname to check (e.g., "/abc-defg-hij" or "/meet/abc-defg-hij")
  * @returns The meeting code if valid, null otherwise
  */
 export function getMeetingCodeFromPath(pathname: string): string | null {
-  const match = pathname.match(/^\/([a-z]{3}-[a-z]{4}-[a-z]{3})$/);
+  const match = pathname.match(/^\/(?:meet\/)?([a-z]{3}-[a-z]{4}-[a-z]{3})\/?$/);
   return match ? match[1] : null;
 }

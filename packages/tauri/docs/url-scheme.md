@@ -15,6 +15,7 @@ apps, shortcuts, scripts, and launchers (Alfred, Raycast, etc.) can drive it.
 | URL | Action | Notes |
 | --- | --- | --- |
 | `meetcat://meet.google.com/<code>` | Open meeting `<code>` | "Replace `https` with `meetcat`" mirror form. `<code>` must match `xxx-xxxx-xxx`. |
+| `meetcat://meet.google.com/meet/<code>` | Open meeting `<code>` | Mirror form of the newer Meet `/meet/<code>` URL. Normalized to `<code>`. |
 | `meetcat://meet.google.com/lookup/<id>` | Join via Meet lookup link | `<id>` allows `[A-Za-z0-9_-]`. |
 | `meetcat://join?id=<code>` | Open meeting `<code>` (query form) | Canonical query form. |
 | `meetcat://join/<code>` | Open meeting `<code>` (path form) | Convenient for launchers. |

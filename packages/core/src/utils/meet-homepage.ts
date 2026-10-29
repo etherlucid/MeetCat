@@ -1,4 +1,4 @@
-const MEETING_PATH_PATTERN = /^[a-z]{3}-[a-z]{4}-[a-z]{3}$/;
+const MEETING_PATH_PATTERN = /^(?:meet\/)?[a-z]{3}-[a-z]{4}-[a-z]{3}$/;
 
 export function isMeetHomepageUrl(url: string): boolean {
   if (!url.startsWith("https://meet.google.com/")) return false;

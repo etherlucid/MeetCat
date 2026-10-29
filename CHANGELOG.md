@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-10-29
+
+Fixes meetings breaking after Google Meet moved meetings to
+`meet.google.com/meet/<code>` URLs.
+
+### Fixed
+
+- Fixed clicking a link in the meeting chat, directly or with "Open Link
+  in New Window", replacing the meeting with the linked page and
+  disconnecting the call. Links now open in the default browser. (Tauri)
+- Fixed auto-join and joined-meeting tracking not working on meetings
+  opened at the new `meet.google.com/meet/<code>` URLs. (Tauri and
+  extension)
+- Fixed `meetcat://meet.google.com/meet/<code>` deep links not being
+  recognized. (Tauri)
+
 ## [0.4.3] - 2026-09-09
 
 Fixes the auto-join prep page reopening in a loop after it is cancelled.

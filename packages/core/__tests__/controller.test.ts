@@ -551,6 +551,13 @@ describe("Controller - Join Button", () => {
       expect(getMeetingCodeFromPath("/abc-defg-hij")).toBe("abc-defg-hij");
     });
 
+    it.each(["/meet/abc-defg-hij", "/meet/abc-defg-hij/", "/abc-defg-hij/"])(
+      "should extract the meeting code from %s",
+      (path) => {
+        expect(getMeetingCodeFromPath(path)).toBe("abc-defg-hij");
+      }
+    );
+
     it("should return null for homepage", () => {
       expect(getMeetingCodeFromPath("/")).toBeNull();
     });
@@ -563,6 +570,9 @@ describe("Controller - Join Button", () => {
 
     it("should return null for paths with extra segments", () => {
       expect(getMeetingCodeFromPath("/abc-defg-hij/extra")).toBeNull();
+      expect(getMeetingCodeFromPath("/meet/abc-defg-hij/extra")).toBeNull();
+      expect(getMeetingCodeFromPath("/other/abc-defg-hij")).toBeNull();
+      expect(getMeetingCodeFromPath("/meet/home")).toBeNull();
     });
   });
 });

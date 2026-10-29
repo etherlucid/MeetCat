@@ -2,6 +2,7 @@
 //!
 //! Supported forms:
 //! - `meetcat://meet.google.com/<code>`       — Google Meet mirror
+//! - `meetcat://meet.google.com/meet/<code>`
 //! - `meetcat://meet.google.com/lookup/<id>`
 //! - `meetcat://join?id=<code>`               — query form
 //! - `meetcat://join/<code>`                  — path form
@@ -87,7 +88,8 @@ fn code_from_meet_path(trimmed_path: &str) -> Option<String> {
         }
         return None;
     }
-    is_meeting_code(trimmed_path).then(|| trimmed_path.to_string())
+    let code = trimmed_path.strip_prefix("meet/").unwrap_or(trimmed_path);
+    is_meeting_code(code).then(|| code.to_string())
 }
 
 /// `xxx-xxxx-xxx` (3-4-3 alphanumeric).
@@ -154,6 +156,24 @@ mod tests {
                 code: "xrs-dpxg-hsw".to_string(),
             })
         );
+    }
+
+    #[test]
+    fn join_meet_prefixed_mirror() {
+        for url in [
+            "meetcat://meet.google.com/meet/xrs-dpxg-hsw",
+            "meetcat://meet.google.com/meet/xrs-dpxg-hsw/?hs=186",
+        ] {
+            assert_eq!(
+                parse_str(url),
+                Some(DeepLinkAction::JoinMeeting {
+                    code: "xrs-dpxg-hsw".to_string(),
+                })
+            );
+        }
+        assert_eq!(parse_str("meetcat://meet.google.com/meet/"), None);
+        assert_eq!(parse_str("meetcat://meet.google.com/meet/nope"), None);
+        assert_eq!(parse_str("meetcat://meet.google.com/meet/lookup/abc"), None);
     }
 
     #[test]
